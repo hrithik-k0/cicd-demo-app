@@ -1,0 +1,11 @@
+*.pem
+.env
+.env.*
+*.tfstate
+*.tfstate.backup
+.terraform/
+.terraform.lock.hcl
+venv/
+__pycache__/
+*.pyc
+test-results.xml
