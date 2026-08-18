@@ -2,10 +2,10 @@ pipeline {
     agent any
 
     environment {
-        AWS_REGION      = 'us-east-1'
-        ECR_REPO        = "<your-aws-account-id>.dkr.ecr.${AWS_REGION}.amazonaws.com/cicd-demo-app"
+        AWS_REGION      = 'ap-south-1'
+        ECR_REPO        = "951066974776.dkr.ecr.${AWS_REGION}.amazonaws.com/cicd-demo-app"
         IMAGE_TAG       = "${env.GIT_COMMIT.take(7)}"
-        MANIFESTS_REPO  = 'git@github.com:<your-username>/cicd-demo-manifests.git'
+        MANIFESTS_REPO  = 'git@github.com:hrithik-k0/cicd-demo-manifests.git'
     }
 
     options {
