@@ -29,7 +29,7 @@ pipeline {
                         pip install -r requirements.txt
                         flake8 src --max-line-length=100
                     '''
-                
+               
             }
         }
 
