@@ -23,24 +23,21 @@ pipeline {
 
         stage('Lint') {
             steps {
-                    sh '''
-                        python3 -m venv venv
-                        . venv/bin/activate
-                        pip install -r requirements.txt
-                        flake8 src --max-line-length=100
-                    '''
-               
+                sh '''
+                    python3 -m venv venv
+                    . venv/bin/activate
+                    pip install -r requirements.txt
+                    flake8 src --max-line-length=100
+                '''
             }
         }
 
         stage('Unit Tests') {
             steps {
-                
-                    sh '''
-                        . venv/bin/activate
-                        pytest tests/ --junitxml=test-results.xml
-                    '''
-                }
+                sh '''
+                    . venv/bin/activate
+                    pytest tests/ --junitxml=test-results.xml
+                '''
             }
             post {
                 always {
@@ -55,17 +52,14 @@ pipeline {
                     docker run --rm -v $(pwd):/repo zricethezav/gitleaks:latest \
                         detect --source=/repo --no-git -v || true
                 '''
-                // Remove "|| true" once you've cleaned up any false positives,
-                // so leaked secrets actually fail the build.
             }
         }
 
         stage('Build Image') {
             steps {
-                    sh "docker build -t ${ECR_REPO}:${IMAGE_TAG} -t ${ECR_REPO}:latest ."
-                }
+                sh "docker build -t ${ECR_REPO}:${IMAGE_TAG} -t ${ECR_REPO}:latest ."
             }
-        
+        }
 
         stage('Container Vulnerability Scan') {
             steps {
@@ -104,7 +98,7 @@ pipeline {
                 }
             }
         }
-    
+    }
 
     post {
         success {
@@ -118,5 +112,3 @@ pipeline {
         }
     }
 }
-
-
