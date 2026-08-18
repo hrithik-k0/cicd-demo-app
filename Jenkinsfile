@@ -23,20 +23,19 @@ pipeline {
 
         stage('Lint') {
             steps {
-                dir('app') {
                     sh '''
                         python3 -m venv venv
                         . venv/bin/activate
                         pip install -r requirements.txt
                         flake8 src --max-line-length=100
                     '''
-                }
+                
             }
         }
 
         stage('Unit Tests') {
             steps {
-                dir('app') {
+                
                     sh '''
                         . venv/bin/activate
                         pytest tests/ --junitxml=test-results.xml
@@ -45,7 +44,7 @@ pipeline {
             }
             post {
                 always {
-                    junit 'app/test-results.xml'
+                    junit 'test-results.xml'
                 }
             }
         }
@@ -63,11 +62,10 @@ pipeline {
 
         stage('Build Image') {
             steps {
-                dir('app') {
                     sh "docker build -t ${ECR_REPO}:${IMAGE_TAG} -t ${ECR_REPO}:latest ."
                 }
             }
-        }
+        
 
         stage('Container Vulnerability Scan') {
             steps {
@@ -106,7 +104,7 @@ pipeline {
                 }
             }
         }
-    }
+    
 
     post {
         success {
@@ -120,3 +118,5 @@ pipeline {
         }
     }
 }
+
+
