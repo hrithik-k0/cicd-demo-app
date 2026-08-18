@@ -8,6 +8,10 @@ RUN pip install --no-cache-dir --user -r requirements.txt
 # --- Final stage ---
 FROM python:3.12-slim
 
+# Patch OS packages to pick up latest security fixes not yet baked into the base image
+RUN apt-get update && apt-get upgrade -y && rm -rf /var/lib/apt/lists/*
+
+
 # Run as non-root user (security best practice)
 RUN useradd -m appuser
 WORKDIR /app
